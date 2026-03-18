@@ -24,12 +24,31 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(int id) {
+        Product product = productDao.getById(id);
+        if (product == null) {
+            throw new RuntimeException("Product not found");
+        }
         productDao.deleteProductById(id);
     }
 
     @Override
     public void updateProduct(Product product , int id) {
+        Product oldProduct = productDao.getById(id);
+        String oldPhoto = oldProduct.getProductDetails().getPhoto();
+        String newPhoto = product.getProductDetails().getPhoto();
+        if(newPhoto == null || newPhoto.trim().isEmpty()){
+            product.getProductDetails().setPhoto(oldPhoto);
+        }
         productDao.updateProductById(product,id);
+    }
+    @Override
+    public void saveOrUpdate(Product product){
+        if(product.getId() == 0){
+            saveProduct(product);
+        }
+        else{
+            updateProduct(product,product.getId());
+        }
     }
 
     @Override
@@ -41,4 +60,5 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProducts() {
         return productDao.getAllProducts();
     }
+
 }

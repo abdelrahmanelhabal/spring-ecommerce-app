@@ -8,6 +8,7 @@ public interface ProductService {
     void saveProduct(Product product);
     void deleteProduct(int id);
     void updateProduct(Product product,int id);
+    void saveOrUpdate(Product product);
     Product getProduct(int id);
     List<Product> getProducts();
 }
