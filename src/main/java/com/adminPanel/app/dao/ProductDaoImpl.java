@@ -50,7 +50,7 @@ public class ProductDaoImpl implements ProductDao{
             oldDetails.setPrice(newDetails.getPrice());
             oldDetails.setPhoto(newDetails.getPhoto());
             oldDetails.setManufacturer(newDetails.getManufacturer());
-            oldDetails.setAvailable(oldDetails.isAvailable());
+            oldDetails.setAvailable(newDetails.isAvailable());
         }
     }
 
