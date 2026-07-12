@@ -32,22 +32,12 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/spring-mvc-app:${IMAGE_TAG}
 
-      - name: Debug BASTION_HOST
-        run: |
-          echo "Host length: ${#HOST}"
-          printf 'Host value: [%s]\n' "$HOST"
-        env:
-          HOST: ${{ secrets.BASTION_HOST }}
-          
+    
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
-      
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 700 ~/.ssh/id_rsa
-      
-          echo "Host: '${{ secrets.BASTION_HOST }}'"
-      
           ssh-keyscan -v -H ${{ secrets.BASTION_HOST }}
           
       
@@ -55,7 +45,9 @@ jobs:
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.BASTION_HOST }} << 'EOF'
       
-            ssh ${{ secrets.EC2_USER }}@${{ secrets.PRIVATE_IP }} << 'INNER_EOF'
+            ssh -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            ${{ secrets.EC2_USER }}@${{ secrets.PRIVATE_IP }} << 'INNER_EOF'
       
               cd /home/ec2-user/app
       
