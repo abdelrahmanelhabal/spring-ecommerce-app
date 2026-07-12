@@ -40,16 +40,18 @@ jobs:
           chmod 700 ~/.ssh/id_rsa
           ssh-keyscan -v -H ${{ secrets.BASTION_HOST }}
           
-      
+    
       - name: Deploy
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.BASTION_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              ${{ secrets.BASTION_USER }}@${{ secrets.BASTION_HOST }} << 'EOF'
       
             ssh -o StrictHostKeyChecking=no \
-            -o UserKnownHostsFile=/dev/null \
-            ${{ secrets.EC2_USER }}@${{ secrets.PRIVATE_IP }} << 'INNER_EOF'
+                -o UserKnownHostsFile=/dev/null \
+                ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'INNER_EOF'
       
-              cd /home/ec2-user/app
+              cd /home/${{ secrets.EC2_USER }}/app
       
               docker compose pull
       
