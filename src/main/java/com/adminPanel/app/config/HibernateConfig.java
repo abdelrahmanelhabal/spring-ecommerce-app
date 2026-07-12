@@ -31,10 +31,10 @@ public class HibernateConfig {
     @Bean
     public DataSource dataSource(){
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setDriverClassName(env.getProperty("hibernate.connection.driver_class"));
-        dataSource.setJdbcUrl(env.getProperty("hibernate.connection.url"));
-        dataSource.setUsername(env.getProperty("hibernate.connection.username"));
-        dataSource.setPassword(env.getProperty("hibernate.connection.password"));
+        dataSource.setDriverClassName(System.getenv("hibernate.connection.driver_class"));
+        dataSource.setJdbcUrl(System.getenv("hibernate.connection.url"));
+        dataSource.setUsername(System.getenv("hibernate.connection.username"));
+        dataSource.setPassword(System.getenv("hibernate.connection.password"));
         return dataSource ;
     }
 
@@ -45,11 +45,11 @@ public class HibernateConfig {
         sessionFactory.setPackagesToScan("com.adminPanel.app");
 
         Properties hibernateProperties = new Properties();
-        hibernateProperties.put("hibernate.dialect",env.getProperty("hibernate.dialect"));
+        hibernateProperties.put("hibernate.dialect",System.getenv("hibernate.dialect"));
 
-        hibernateProperties.put("hibernate.show_sql",env.getProperty("hibernate.show_sql"));
-        hibernateProperties.put("hibernate.hbm2ddl.auto",env.getProperty("hibernate.hbm2ddl.auto"));
-        hibernateProperties.put("hibernate.current_session_context_class",env.getProperty("hibernate.current_session_context_class"));
+        hibernateProperties.put("hibernate.show_sql",System.getenv("hibernate.show_sql"));
+        hibernateProperties.put("hibernate.hbm2ddl.auto",System.getenv("hibernate.hbm2ddl.auto"));
+        hibernateProperties.put("hibernate.current_session_context_class",System.getenv("hibernate.current_session_context_class"));
 
         sessionFactory.setHibernateProperties(hibernateProperties);
         return sessionFactory;
