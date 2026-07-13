@@ -17,16 +17,8 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = "com.adminPanel.app")
-@PropertySource("classpath:app.properties")
 @EnableTransactionManagement
 public class HibernateConfig {
-
-    private final Environment env ;
-
-    @Autowired
-    public HibernateConfig(Environment env){
-        this.env = env ;
-    }
 
     @Bean
     public DataSource dataSource(){
